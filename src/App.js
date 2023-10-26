@@ -332,6 +332,16 @@ function MovieDetails({ watched, selectedId, onCloseMovie, onAddWatched }) {
   const [error, setError] = useState("");
   const [userRating, setUserRating] = useState(0);
 
+  // 用户评分次数
+  const countRef = useRef(0);
+
+  useEffect(
+    function () {
+      if (userRating) countRef.current++;
+    },
+    [userRating]
+  );
+
   const watchedMovie = watched
     ?.filter((movie) => movie.imdbID === selectedId)
     .at(0);
@@ -361,6 +371,7 @@ function MovieDetails({ watched, selectedId, onCloseMovie, onAddWatched }) {
       runtime: validRuntime,
       userRating,
       imdbID,
+      countRatingDecisions: countRef.current,
     });
     onCloseMovie();
   }
