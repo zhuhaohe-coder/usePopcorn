@@ -8,7 +8,10 @@ const KEY = "50f81cb";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
+  const [watched, setWatched] = useState(function () {
+    const storedValue = localStorage.getItem("watched");
+    return JSON.parse(storedValue);
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
@@ -54,6 +57,14 @@ export default function App() {
       };
     },
     [query]
+  );
+
+  // 添加本地存储
+  useEffect(
+    function () {
+      localStorage.setItem("watched", JSON.stringify(watched));
+    },
+    [watched]
   );
 
   function handleSelectMovie(id) {
